@@ -19,9 +19,9 @@ idea was that you would quickly find related keywords to target in SEO from rela
 (given algorthm complexity and time constraints, switched to "influencer finder")
 
 #steps left to do
-1. sort the filteredArray (started on line 53) by followers_count (backend or frontend)
+1.) sort the filteredArray (started on line 53) by followers_count (backend or frontend)
 
-2. parse search term variable from front end so spaces are handled for the URL in http request (front end)
+2.) parse search term variable from front end so spaces are handled for the URL in http request (front end)
 
 from https://dev.twitter.com/rest/public/search:
 
@@ -35,12 +35,12 @@ URL encoded query:
 
 Note that the space character can be represented by “%20” or “+” sign.'
 
-3. send user input value, after properly parsed, to the back end. perhaps a PUT endpoint? export variable in client.js and then require variable in server.js?
+3.) send user input value, after properly parsed, to the back end. perhaps a PUT endpoint? export variable in client.js and then require variable in server.js?
 (front end and back end)
 
-4. React + Redux for actions (front end)
+4.) React + Redux for actions (front end)
 
-5. CSS styling (front end)
+5.) CSS styling (front end)
 
 NOTE: you have full permission to add/remove the properties you get in that response by console logging (body.statuses) in server.js to see what other properties are available.
 
