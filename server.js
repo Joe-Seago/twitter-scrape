@@ -43,7 +43,7 @@ call({ url: url,
 
     let filterTweets = (element, index, array) => {
         if(element.user.followers_count > 500) {
-            filteredArray.push({realname: element.user.name, handle: element.user.screen_name, location: element.user.location, followers: element.user.followers_count, profilepic: element.user.profile_image_url, tweet: element.text})
+            filteredArray.push({realname: element.user.name, handle: element.user.screen_name, location: element.user.location, followers: element.user.followers_count, profilepic: element.user.profile_image_url, created: element.user.created_at, tweet: element.text})
         } 
     }
 
