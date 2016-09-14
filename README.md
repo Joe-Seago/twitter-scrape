@@ -28,7 +28,6 @@ from https://dev.twitter.com/rest/public/search:
 'Please, make sure to URL encode these queries before making the request. There are several online tools to help you to do that, or you can search at twitter.com/search and copy the encoded URL from the browser’s address bar. The table below show some example mappings from search queries to URL encoded queries:
 
 Search query	URL encoded query
-#haiku #poetry	%23haiku+%23poetry
 “happy hour” :)	%22happy%20hour%22%20%3A%29
 
 Note that the space character can be represented by “%20” or “+” sign.'
