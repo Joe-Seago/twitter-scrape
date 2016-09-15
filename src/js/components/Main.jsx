@@ -17,10 +17,12 @@ class Main extends React.Component {
 
   render() {
     return (
-      <h1>BIG IMAGE STUFF</h1>
-      <input type="text" ref="userSearch" placeholder='"JavaScript", "React.js", "Bill Cosby"' />
-      <button onClick={this.getTweets}>Search</button>
-      <TweetList />
+      <div>
+        <h1>BIG IMAGE STUFF</h1>
+        <input type="text" ref="userSearch" placeholder='"JavaScript", "React.js", "Bill Cosby"' />
+        <button onClick={this.getTweets}>Search</button>
+        <TweetList />
+      </div>
     )
   }
 }

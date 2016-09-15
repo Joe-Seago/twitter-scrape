@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import Tweet from './Tweet'
 
 class TweetList extends React.Component {
-  let tweets = this.props.tweets
-  console.log(tweets, "<--- tweets state")
-
-  
 
   render() {
+    let tweets = this.props.tweets
+    console.log(tweets, "<--- tweets state")
+
     return(
       <div>
 

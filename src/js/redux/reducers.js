@@ -1,10 +1,10 @@
 import * as actions from './actions'
 
 const initialState = {
-  tweets = []
+  tweets: []
 }
 
-var AppReducer = (state, action) {
+var AppReducer = (state, action) => {
   state = state || initialState
 
   if (action.type === actions.FETCH_GET_TWEETS_SUCCESS) {
