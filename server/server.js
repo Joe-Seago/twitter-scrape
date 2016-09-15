@@ -31,26 +31,27 @@ let url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + term + '&lang=en
 let bearerToken = 'AAAAAAAAAAAAAAAAAAAAALXWwwAAAAAAONLagqR%2F63P75ZEQV1QnwsN4KLA%3DfKpXugdwO4dOdQVm73HdHa79AtKQHHFoSezm0Fn9FTLVUcq5Js'
 
 // npm module 'REQUEST' used for http request
-call({ url: url,
-  method:'GET',
-  json:true,
+call({
+  url: url,
+  method: 'GET',
+  json: true,
   headers: {
     "Authorization": "Bearer " + bearerToken
   }
-
-}, function(err, resp, body) {
+},
+function(err, resp, body) {
   let filteredArray = []
 
   let filterTweets = (element, index, array) => {
     if(element.user.followers_count > 500) {
       filteredArray.push({
-      realname: element.user.name,
-      handle: element.user.screen_name,
-      location: element.user.location,
-      followers: element.user.followers_count,
-      profilepic: element.user.profile_image_url,
-      created: element.user.created_at,
-      tweet: element.text
+        realname: element.user.name,
+        handle: element.user.screen_name,
+        location: element.user.location,
+        followers: element.user.followers_count,
+        profilepic: element.user.profile_image_url,
+        created: element.user.created_at,
+        tweet: element.text
       })
     }
   }

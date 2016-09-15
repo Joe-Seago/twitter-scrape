@@ -27,8 +27,8 @@ from https://dev.twitter.com/rest/public/search:
 
 'Please, make sure to URL encode these queries before making the request. There are several online tools to help you to do that, or you can search at twitter.com/search and copy the encoded URL from the browser’s address bar. The table below show some example mappings from search queries to URL encoded queries:
 
-Search query:	
-“happy hour” :)	
+Search query:
+“happy hour” :)
 
 URL encoded query:
 %22happy%20hour%22%20%3A%29
@@ -47,27 +47,35 @@ NOTE: you have full permission to add/remove the properties you get in that resp
 you also have full permission to alter wireframe and present the results however looks best.
 
 the filtered array response to the front end will look like:  
-[ { realname: 'Cade Phillips',
+[
+  {
+    realname: 'Cade Phillips',
     handle: 'TyCado',
     location: 'Canada',
     followers: 577,
     profilepic: 'http://pbs.twimg.com/profile_images/748619192803287040/44Kuv15A_normal.jpg',
     created: 'Tue Mar 27 20:46:16 +0000 2007',
-    tweet: '@bdnwheatkings take down Regina 10-3. Two 20 min periods 3 on 3 hockey. Should set up the game on Friday nicely. Good job boys!!' },
-  { realname: 'Sage of the Six Path',
+    tweet: '@bdnwheatkings take down Regina 10-3. Two 20 min periods 3 on 3 hockey. Should set up the game on Friday nicely. Good job boys!!'
+  },
+  {
+    realname: 'Sage of the Six Path',
     handle: 'RyanGawdsling',
     location: 'Brooklyn,NY',
     followers: 1306,
     profilepic: 'http://pbs.twimg.com/profile_images/672842227769569280/GPo54u3j_normal.jpg',
     created: 'Tue Mar 27 20:46:16 +0000 2007',
-    tweet: 'RT @NYCMayorsOffice: Fun Fact: Commissioner @NYCCalise played on team USA’s Ice Sled Hockey team in the 1998 #Paralympics 💪 https://t.co/CZ…' },
-  { realname: 'Bruins Feed',
+    tweet: 'RT @NYCMayorsOffice: Fun Fact: Commissioner @NYCCalise played on team USA’s Ice Sled Hockey team in the 1998 #Paralympics 💪 https://t.co/CZ…'
+  },
+  {
+    realname: 'Bruins Feed',
     handle: 'BruinsFeed',
     location: '',
     followers: 600,
     profilepic: 'http://pbs.twimg.com/profile_images/527464961983803392/cALK0ndA_normal.jpeg',
     created: 'Tue Mar 27 20:46:16 +0000 2007',
-    tweet: 'Combining hockey players and social media can be a dangerous thing: https://t.co/yyIvuLZcCo' } ]
+    tweet: 'Combining hockey players and social media can be a dangerous thing: https://t.co/yyIvuLZcCo'
+  }
+]
 
 #v2.0 steps, for the future or if time permits
 - search by place? biggest influencers in a given location?
