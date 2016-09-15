@@ -23241,23 +23241,38 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// Twitter uses OAuth for access to its API
+	// Use Application-only authentication (since our endpoints won't require user context)
+	// App-Only Auth docs: https://dev.twitter.com/oauth/application-only
+	
+	
 	/*------------- FETCH ACTIONS ---------------*/
 	
-	var bearerToken = 'AAAAAAAAAAAAAAAAAAAAALXWwwAAAAAAONLagqR%2F63P75ZEQV1QnwsN4KLA%3DfKpXugdwO4dOdQVm73HdHa79AtKQHHFoSezm0Fn9FTLVUcq5Js';
+	// POST req to -> /oauth2/token
+	//
+	// request = {
+	//  method: 'POST',
+	//  headers: {
+	//    "Authorization": "Basic " + bearerToken,
+	//    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+	//  },
+	//  "Content-Length": "29",
+	//  body: "grant_type=client_credentials"
+	// }
 	
 	// Retrieve tweets from Twitter API, arranged by users with most followers
 	var fetchGetTweets = exports.fetchGetTweets = function fetchGetTweets(userSearch) {
-	  console.log("in fetchGetTweets, searching for...", userSearch);
+	  console.log("in fetchGetTweets, ", userSearch);
 	  return function (dispatch) {
-	    // %20 represents spaces in user search
-	    var url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + userSearch + '&lang=en&result_type=recent';
+	    var url = 'http://localhost:8000/tweets';
 	    var request = {
+	      mode: 'no-cors',
 	      method: 'GET',
 	      headers: {
 	        "Accept": "application/json",
-	        "Content-Type": "application/json",
-	        "Authorization": "Bearer " + bearerToken
-	      }
+	        "Content-Type": "application/json"
+	      },
+	      body: userSearch
 	    };
 	    return (0, _isomorphicFetch2.default)(url, request).then(function (response) {
 	      if (response.status < 200 || response.status >= 300) {
@@ -23283,32 +23298,12 @@
 	          });
 	        }
 	      };
-	
 	      return dispatch(fetchGetTweetsSuccess(tweets));
 	    }).catch(function (error) {
 	      return dispatch(fetchGetTweetsError(error));
 	    });
 	  };
 	};
-	
-	// EXAMPLE Response
-	var x = [{
-	  realname: 'Odell Wreck\'em',
-	  handle: 'iSellDreamZ',
-	  location: 'FL',
-	  followers: 1211,
-	  profilepic: 'http://pbs.twimg.com/profile_images/766800780389122048/WJ9-ZSuJ_normal.jpg',
-	  created: 'Wed Apr 15 13:40:08 +0000 2009',
-	  tweet: 'RT @COCOtheVIRGO: Kanye West is truly iconic.'
-	}, {
-	  realname: 'The Many Hands™ God',
-	  handle: 'LawdMegatron',
-	  location: 'CLEVELAND',
-	  followers: 1168,
-	  profilepic: 'http://pbs.twimg.com/profile_images/771439620252962816/HgpcDOay_normal.jpg',
-	  created: 'Wed Mar 31 13:28:40 +0000 2010',
-	  tweet: 'NOW THAT iTHINK ABOUT IT THO.... WHAT OTHER INJURIES DID KANYE SUSTAIN IN THAT CAR ACCIDENT?'
-	}];
 	
 	/*------- FETCH SUCCESS / ERROR ACTIONS --------*/
 	
@@ -23826,21 +23821,37 @@
 	/*==== HARD CODED STATE ===*/
 	var initialState = {
 	  tweets: [{
-	    realname: 'Odell Wreck\'em',
-	    handle: 'iSellDreamZ',
-	    location: 'FL',
-	    followers: 1211,
-	    profilepic: 'http://pbs.twimg.com/profile_images/766800780389122048/WJ9-ZSuJ_normal.jpg',
-	    created: 'Wed Apr 15 13:40:08 +0000 2009',
-	    tweet: 'RT @COCOtheVIRGO: Kanye West is truly iconic.'
+	    realname: 'cumiho',
+	    handle: 'cumihomo',
+	    location: 'Indonesia',
+	    followers: 511,
+	    profilepic: 'http://pbs.twimg.com/profile_images/498731546874892288/scTkrbtI_normal.jpeg',
+	    created: 'Thu Dec 01 09:36:23 +0000 2011',
+	    tweet: '"Thought you\'d buy yourself an iPhone 7 on Friday? Too bad, UK" https://t.co/jj7oHDvAL1'
 	  }, {
-	    realname: 'The Many Hands™ God',
-	    handle: 'LawdMegatron',
-	    location: 'CLEVELAND',
-	    followers: 1168,
-	    profilepic: 'http://pbs.twimg.com/profile_images/771439620252962816/HgpcDOay_normal.jpg',
-	    created: 'Wed Mar 31 13:28:40 +0000 2010',
-	    tweet: 'NOW THAT iTHINK ABOUT IT THO.... WHAT OTHER INJURIES DID KANYE SUSTAIN IN THAT CAR ACCIDENT?'
+	    realname: 'billck',
+	    handle: 'billck',
+	    location: 'Gardner, KS',
+	    followers: 2513,
+	    profilepic: 'http://pbs.twimg.com/profile_images/661708465656561664/kcAf4qgU_normal.jpg',
+	    created: 'Sun Oct 26 01:18:03 +0000 2008',
+	    tweet: 'RT @BoSnerdley: Apple says initial quantities of iPhone 7 Plus sold out https://t.co/GM4Cy2khvh via @Reuters'
+	  }, {
+	    realname: 'iPhoneNewsCollector',
+	    handle: 'iphone_nc_eng',
+	    location: '',
+	    followers: 5695,
+	    profilepic: 'http://pbs.twimg.com/profile_images/770695632/apple-iphone_normal.jpg',
+	    created: 'Tue Mar 23 18:12:19 +0000 2010',
+	    tweet: 'Engadget: ESA\'s Gaia satellite mapped a billion stars in the Milky Way https://t.co/paJTs7muZq'
+	  }, {
+	    realname: 'Othniel F Mijares S',
+	    handle: 'parecerleer',
+	    location: 'CDMX',
+	    followers: 2010,
+	    profilepic: 'http://pbs.twimg.com/profile_images/2352371539/jdwcqsw8b0x8su3bd4xo_normal.jpeg',
+	    created: 'Sun Oct 24 14:47:45 +0000 2010',
+	    tweet: 'UK Approves EDF’s £18 Billion Hinkley Point Nuclear Project - Connected for iPhone  https://t.co/KEnIlEmx31'
 	  }]
 	};
 	
