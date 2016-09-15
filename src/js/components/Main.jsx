@@ -18,7 +18,7 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <h1>BIG IMAGE STUFF</h1>
+        <h1>Twitter Influencers</h1>
         <input type="text" ref="userSearch" placeholder='"JavaScript", "React.js", "Bill Cosby"' />
         <button onClick={this.getTweets}>Search</button>
         <TweetList />

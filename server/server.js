@@ -1,3 +1,4 @@
+'use strict'
 // dependencies
 let express = require('express');
 let app = express();
@@ -20,7 +21,7 @@ let knex = require('knex')({
 // search term(s) should be imported from client
 // export term(s) from 'client.js', and require above
 // hardcoded for testing
-let term = 'hockey'
+let term = 'kanye'
 
 
 // Twitter API endpoint

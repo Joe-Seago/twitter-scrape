@@ -23243,15 +23243,20 @@
 	
 	/*------------- FETCH ACTIONS ---------------*/
 	
+	var bearerToken = 'AAAAAAAAAAAAAAAAAAAAALXWwwAAAAAAONLagqR%2F63P75ZEQV1QnwsN4KLA%3DfKpXugdwO4dOdQVm73HdHa79AtKQHHFoSezm0Fn9FTLVUcq5Js';
+	
 	// Retrieve tweets from Twitter API, arranged by users with most followers
 	var fetchGetTweets = exports.fetchGetTweets = function fetchGetTweets(userSearch) {
 	  console.log("in fetchGetTweets, searching for...", userSearch);
 	  return function (dispatch) {
-	    var url = '';
+	    // %20 represents spaces in user search
+	    var url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + userSearch + '&lang=en&result_type=recent';
 	    var request = {
+	      method: 'GET',
 	      headers: {
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json'
+	        "Accept": "application/json",
+	        "Content-Type": "application/json",
+	        "Authorization": "Bearer " + bearerToken
 	      }
 	    };
 	    return (0, _isomorphicFetch2.default)(url, request).then(function (response) {
@@ -23263,12 +23268,47 @@
 	      return response.json();
 	    }).then(function (tweets) {
 	      console.log(tweets, "<--Response Body");
+	      var tweetArray = [];
+	
+	      var filterTweets = function filterTweets(element, index, array) {
+	        if (element.user.followers_count > 500) {
+	          tweetArray.push({
+	            realname: element.user.name,
+	            handle: element.user.screen_name,
+	            location: element.user.location,
+	            followers: element.user.followers_count,
+	            profilepic: element.user.profile_image_url,
+	            created: element.user.created_at,
+	            tweet: element.text
+	          });
+	        }
+	      };
+	
 	      return dispatch(fetchGetTweetsSuccess(tweets));
 	    }).catch(function (error) {
 	      return dispatch(fetchGetTweetsError(error));
 	    });
 	  };
 	};
+	
+	// EXAMPLE Response
+	var x = [{
+	  realname: 'Odell Wreck\'em',
+	  handle: 'iSellDreamZ',
+	  location: 'FL',
+	  followers: 1211,
+	  profilepic: 'http://pbs.twimg.com/profile_images/766800780389122048/WJ9-ZSuJ_normal.jpg',
+	  created: 'Wed Apr 15 13:40:08 +0000 2009',
+	  tweet: 'RT @COCOtheVIRGO: Kanye West is truly iconic.'
+	}, {
+	  realname: 'The Many Hands™ God',
+	  handle: 'LawdMegatron',
+	  location: 'CLEVELAND',
+	  followers: 1168,
+	  profilepic: 'http://pbs.twimg.com/profile_images/771439620252962816/HgpcDOay_normal.jpg',
+	  created: 'Wed Mar 31 13:28:40 +0000 2010',
+	  tweet: 'NOW THAT iTHINK ABOUT IT THO.... WHAT OTHER INJURIES DID KANYE SUSTAIN IN THAT CAR ACCIDENT?'
+	}];
 	
 	/*------- FETCH SUCCESS / ERROR ACTIONS --------*/
 	
@@ -23783,8 +23823,25 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
+	/*==== HARD CODED STATE ===*/
 	var initialState = {
-	  tweets: []
+	  tweets: [{
+	    realname: 'Odell Wreck\'em',
+	    handle: 'iSellDreamZ',
+	    location: 'FL',
+	    followers: 1211,
+	    profilepic: 'http://pbs.twimg.com/profile_images/766800780389122048/WJ9-ZSuJ_normal.jpg',
+	    created: 'Wed Apr 15 13:40:08 +0000 2009',
+	    tweet: 'RT @COCOtheVIRGO: Kanye West is truly iconic.'
+	  }, {
+	    realname: 'The Many Hands™ God',
+	    handle: 'LawdMegatron',
+	    location: 'CLEVELAND',
+	    followers: 1168,
+	    profilepic: 'http://pbs.twimg.com/profile_images/771439620252962816/HgpcDOay_normal.jpg',
+	    created: 'Wed Mar 31 13:28:40 +0000 2010',
+	    tweet: 'NOW THAT iTHINK ABOUT IT THO.... WHAT OTHER INJURIES DID KANYE SUSTAIN IN THAT CAR ACCIDENT?'
+	  }]
 	};
 	
 	var AppReducer = function AppReducer(state, action) {
@@ -23893,7 +23950,7 @@
 	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          'BIG IMAGE STUFF'
+	          'Twitter Influencers'
 	        ),
 	        _react2.default.createElement('input', { type: 'text', ref: 'userSearch', placeholder: '"JavaScript", "React.js", "Bill Cosby"' }),
 	        _react2.default.createElement(
@@ -23959,10 +24016,31 @@
 	  _createClass(TweetList, [{
 	    key: 'render',
 	    value: function render() {
-	      var tweets = this.props.tweets;
-	      console.log(tweets, "<--- tweets state");
+	      console.log(this.props.tweets, "<--- tweets state");
 	
-	      return _react2.default.createElement('div', null);
+	      var sortedByFollowers = this.props.tweets.sort(function (obj1, obj2) {
+	        return obj2.followers - obj1.followers;
+	      });
+	      var that = this;
+	      var tweets = Object.keys(sortedByFollowers).map(function (obj, index) {
+	        var tweet = that.props.tweets[obj];
+	
+	        return _react2.default.createElement(
+	          'li',
+	          { key: index },
+	          _react2.default.createElement(_Tweet2.default, { text: tweet.tweet, handle: tweet.handle, followers: tweet.followers, pic: tweet.profilepic })
+	        );
+	      });
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'ul',
+	          { className: 'tweet-list' },
+	          tweets
+	        )
+	      );
 	    }
 	  }]);
 	
@@ -23971,7 +24049,6 @@
 	
 	var mapStateToProps = function mapStateToProps(state, props) {
 	  return {
-	    // TODO: Store state in reducer.js
 	    tweets: state.tweets
 	  };
 	};
@@ -23997,11 +24074,11 @@
 	var Tweet = function Tweet(props) {
 	  return _react2.default.createElement(
 	    "div",
-	    null,
-	    _react2.default.createElement("img", { src: props.image, alt: "Profile Pic" }),
+	    { className: "tweet-box" },
+	    _react2.default.createElement("img", { src: props.pic, alt: "Profile Pic" }),
 	    _react2.default.createElement(
 	      "h4",
-	      null,
+	      { className: "tweet-text" },
 	      props.text
 	    ),
 	    _react2.default.createElement(

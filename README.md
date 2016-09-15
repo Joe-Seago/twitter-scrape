@@ -57,6 +57,7 @@ the filtered array response to the front end will look like:
     created: 'Tue Mar 27 20:46:16 +0000 2007',
     tweet: '@bdnwheatkings take down Regina 10-3. Two 20 min periods 3 on 3 hockey. Should set up the game on Friday nicely. Good job boys!!'
   },
+
   {
     realname: 'Sage of the Six Path',
     handle: 'RyanGawdsling',
@@ -66,6 +67,7 @@ the filtered array response to the front end will look like:
     created: 'Tue Mar 27 20:46:16 +0000 2007',
     tweet: 'RT @NYCMayorsOffice: Fun Fact: Commissioner @NYCCalise played on team USA’s Ice Sled Hockey team in the 1998 #Paralympics 💪 https://t.co/CZ…'
   },
+  
   {
     realname: 'Bruins Feed',
     handle: 'BruinsFeed',
