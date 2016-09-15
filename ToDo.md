@@ -9,7 +9,7 @@
 
 
 
-## Frontend
+## Front End
 
 ### Components
   * Main            -->   Renders search field and button along with TweetList component
@@ -26,4 +26,4 @@
     * Retrieve tweets (API)
 
   * Actions
-    * 
+    *
