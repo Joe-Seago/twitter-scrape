@@ -23271,9 +23271,7 @@
 	        "Accept": "application/json",
 	        "Content-Type": "application/json"
 	      },
-	      body: {
-	        "userSearch": userSearch
-	      }
+	      body: JSON.stringify({ userSearch: userSearch })
 	    };
 	    return (0, _isomorphicFetch2.default)(url, request).then(function (response) {
 	      if (response.status < 200 || response.status >= 300) {

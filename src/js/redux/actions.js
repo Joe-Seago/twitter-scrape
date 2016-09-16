@@ -30,9 +30,9 @@ export var fetchGetTweets = (userSearch) => {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: {
-        "userSearch": userSearch
-      }
+      body: JSON.stringify(
+        {userSearch: userSearch}
+        )
     }
     return fetch(url, request)
     .then((response) => {
