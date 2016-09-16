@@ -75,44 +75,43 @@ app.use(express.static('build'))
 // GET TWEETS
 app.get('/tweets', jsonParser, function(req, res) {
   console.log(req.body, '<--request')
+  query = req.body.userSearch
   // hardcoded search term for testing
   let term = "basketball"
-  let url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + term + '&lang=en&result_type=recent'
+  let url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + query + '&lang=en&result_type=recent'
     // %20 represents spaces in user search
   let filteredArray = []
       // npm module 'REQUEST' used for http request
-      call({
-        url: url,
-        method: 'GET',
-        json: true,
-        headers: {
-          "Authorization": "Bearer " + bearerToken
-        }
-      },
-      function(err, response, body) {
+  call({
+    url: url,
+    method: 'GET',
+    json: true,
+    headers: {
+      "Authorization": "Bearer " + bearerToken
+    }
+  },
+  function(err, response, body) {
 
-        let filterTweets = (element, index, array) => {
-          if(element.user.followers_count > 500) {
-            filteredArray.push({
-              realname: element.user.name,
-              handle: element.user.screen_name,
-              location: element.user.location,
-              followers: element.user.followers_count,
-              profilepic: element.user.profile_image_url,
-              created: element.user.created_at,
-              tweet: element.text
-            })
-          }
-        }
-        //loop through each returned tweet in response and run the filter function above which pushes the tweets meeting criteria into fitleredArray
-        body.statuses.forEach(filterTweets)
-        console.log(filteredArray, '<==RES AFTER PARSING')
-        console.log(filteredArray.length, '<- length of array')
-        //return filtered array to front end
-        return
-      });
+    let filterTweets = (element, index, array) => {
+      if(element.user.followers_count > 500) {
+        filteredArray.push({
+          realname: element.user.name,
+          handle: element.user.screen_name,
+          location: element.user.location,
+          followers: element.user.followers_count,
+          profilepic: element.user.profile_image_url,
+          created: element.user.created_at,
+          tweet: element.text
+        })
+      }
+    }
+    //loop through each returned tweet in response and run the filter function above which pushes the tweets meeting criteria into fitleredArray
+    body.statuses.forEach(filterTweets)
+    console.log(filteredArray, '<==RES AFTER PARSING')
+    console.log(filteredArray.length, '<- length of array')
+  });
 
-      return filteredArray
+  return filteredArray
 });
 
 let port = process.env.PORT || 8080
