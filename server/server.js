@@ -77,7 +77,7 @@ app.post('/tweets', jsonParser, function(req, res) {
   console.log(req.body, '<--request')
   let query = req.body.userSearch
   // hardcoded search term for testing
-  let term = "basketball"
+  // let term = "basketball"
   let url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + query + '&lang=en&result_type=recent'
     // %20 represents spaces in user search
   let filteredArray = []
@@ -102,10 +102,14 @@ app.post('/tweets', jsonParser, function(req, res) {
           followers: element.user.followers_count,
           profilepic: element.user.profile_image_url,
           created: element.user.created_at,
-          tweet: element.text
+          tweet: element.text,
+          retweets: element.retweet_count,
+          favorites: element.favorite_count
         })
       }
     }
+    console.log(body.statuses[0].user, '<--USER')
+
     //loop through each returned tweet in response and run the filter function above which pushes the tweets meeting criteria into fitleredArray
     body.statuses.forEach(filterTweets)
     console.log(filteredArray, '<==RES AFTER PARSING')

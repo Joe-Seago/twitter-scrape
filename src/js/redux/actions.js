@@ -1,23 +1,11 @@
 import fetch from 'isomorphic-fetch'
 
-// Twitter uses OAuth for access to its API
+// Twitter uses OAuth for access to its API (Oauth2 for app-only auth)
 // Use Application-only authentication (since our endpoints won't require user context)
 // App-Only Auth docs: https://dev.twitter.com/oauth/application-only
 
 
 /*------------- FETCH ACTIONS ---------------*/
-
-// POST req to -> /oauth2/token
-//
-// request = {
-//  method: 'POST',
-//  headers: {
-//    "Authorization": "Basic " + bearerToken,
-//    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-//  },
-//  "Content-Length": "29",
-//  body: "grant_type=client_credentials"
-// }
 
 // Retrieve tweets from Twitter API, arranged by users with most followers
 export var fetchGetTweets = (userSearch) => {
@@ -64,7 +52,7 @@ export var fetchGetTweets = (userSearch) => {
 }
 
 
-/*------- FETCH SUCCESS / ERROR ACTIONS --------*/
+/*------------------ ACTIONS ---------------------*/
 
 export const FETCH_GET_TWEETS_SUCCESS = 'FETCH_GET_TWEETS_SUCCESS'
 export var fetchGetTweetsSuccess = (tweets) => {
@@ -79,5 +67,13 @@ export var fetchGetTweetsError = (error) => {
   return {
     type: FETCH_GET_TWEETS_SUCCESS,
     error: error
+  }
+}
+
+export const SORT_OPTION = 'SORT_OPTION'
+export var sortOption = (option) => {
+  return {
+    type: SORT_OPTION,
+    option: option
   }
 }

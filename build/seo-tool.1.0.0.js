@@ -23233,7 +23233,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.fetchGetTweetsError = exports.FETCH_GET_TWEETS_ERROR = exports.fetchGetTweetsSuccess = exports.FETCH_GET_TWEETS_SUCCESS = exports.fetchGetTweets = undefined;
+	exports.sortOption = exports.SORT_OPTION = exports.fetchGetTweetsError = exports.FETCH_GET_TWEETS_ERROR = exports.fetchGetTweetsSuccess = exports.FETCH_GET_TWEETS_SUCCESS = exports.fetchGetTweets = undefined;
 	
 	var _isomorphicFetch = __webpack_require__(202);
 	
@@ -23241,24 +23241,12 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// Twitter uses OAuth for access to its API
+	// Twitter uses OAuth for access to its API (Oauth2 for app-only auth)
 	// Use Application-only authentication (since our endpoints won't require user context)
 	// App-Only Auth docs: https://dev.twitter.com/oauth/application-only
 	
 	
 	/*------------- FETCH ACTIONS ---------------*/
-	
-	// POST req to -> /oauth2/token
-	//
-	// request = {
-	//  method: 'POST',
-	//  headers: {
-	//    "Authorization": "Basic " + bearerToken,
-	//    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-	//  },
-	//  "Content-Length": "29",
-	//  body: "grant_type=client_credentials"
-	// }
 	
 	// Retrieve tweets from Twitter API, arranged by users with most followers
 	var fetchGetTweets = exports.fetchGetTweets = function fetchGetTweets(userSearch) {
@@ -23295,7 +23283,7 @@
 	  };
 	};
 	
-	/*------- FETCH SUCCESS / ERROR ACTIONS --------*/
+	/*------------------ ACTIONS ---------------------*/
 	
 	var FETCH_GET_TWEETS_SUCCESS = exports.FETCH_GET_TWEETS_SUCCESS = 'FETCH_GET_TWEETS_SUCCESS';
 	var fetchGetTweetsSuccess = exports.fetchGetTweetsSuccess = function fetchGetTweetsSuccess(tweets) {
@@ -23310,6 +23298,14 @@
 	  return {
 	    type: FETCH_GET_TWEETS_SUCCESS,
 	    error: error
+	  };
+	};
+	
+	var SORT_OPTION = exports.SORT_OPTION = 'SORT_OPTION';
+	var sortOption = exports.sortOption = function sortOption(option) {
+	  return {
+	    type: SORT_OPTION,
+	    option: option
 	  };
 	};
 
@@ -23810,39 +23806,8 @@
 	
 	/*==== HARD CODED STATE ===*/
 	var initialState = {
-	  tweets: [{
-	    realname: 'cumiho',
-	    handle: 'cumihomo',
-	    location: 'Indonesia',
-	    followers: 511,
-	    profilepic: 'http://pbs.twimg.com/profile_images/498731546874892288/scTkrbtI_normal.jpeg',
-	    created: 'Thu Dec 01 09:36:23 +0000 2011',
-	    tweet: '"Thought you\'d buy yourself an iPhone 7 on Friday? Too bad, UK" https://t.co/jj7oHDvAL1'
-	  }, {
-	    realname: 'billck',
-	    handle: 'billck',
-	    location: 'Gardner, KS',
-	    followers: 2513,
-	    profilepic: 'http://pbs.twimg.com/profile_images/661708465656561664/kcAf4qgU_normal.jpg',
-	    created: 'Sun Oct 26 01:18:03 +0000 2008',
-	    tweet: 'RT @BoSnerdley: Apple says initial quantities of iPhone 7 Plus sold out https://t.co/GM4Cy2khvh via @Reuters'
-	  }, {
-	    realname: 'iPhoneNewsCollector',
-	    handle: 'iphone_nc_eng',
-	    location: '',
-	    followers: 5695,
-	    profilepic: 'http://pbs.twimg.com/profile_images/770695632/apple-iphone_normal.jpg',
-	    created: 'Tue Mar 23 18:12:19 +0000 2010',
-	    tweet: 'Engadget: ESA\'s Gaia satellite mapped a billion stars in the Milky Way https://t.co/paJTs7muZq'
-	  }, {
-	    realname: 'Othniel F Mijares S',
-	    handle: 'parecerleer',
-	    location: 'CDMX',
-	    followers: 2010,
-	    profilepic: 'http://pbs.twimg.com/profile_images/2352371539/jdwcqsw8b0x8su3bd4xo_normal.jpeg',
-	    created: 'Sun Oct 24 14:47:45 +0000 2010',
-	    tweet: 'UK Approves EDF’s £18 Billion Hinkley Point Nuclear Project - Connected for iPhone  https://t.co/KEnIlEmx31'
-	  }]
+	  tweets: [],
+	  method: ''
 	};
 	
 	var AppReducer = function AppReducer(state, action) {
@@ -23851,22 +23816,18 @@
 	  if (action.type === actions.FETCH_GET_TWEETS_SUCCESS) {
 	    return Object.assign({}, state, {
 	      tweets: action.tweets || [{
-	        realname: 'cumiho',
-	        handle: 'cumihomo',
-	        location: 'Indonesia',
-	        followers: 511,
+	        realname: 'Error',
+	        handle: 'aint_work',
+	        location: 'who knows',
+	        followers: 404,
 	        profilepic: 'http://pbs.twimg.com/profile_images/498731546874892288/scTkrbtI_normal.jpeg',
 	        created: 'Thu Dec 01 09:36:23 +0000 2011',
-	        tweet: '"Thought you\'d buy yourself an iPhone 7 on Friday? Too bad, UK" https://t.co/jj7oHDvAL1'
-	      }, {
-	        realname: 'billck',
-	        handle: 'billck',
-	        location: 'Gardner, KS',
-	        followers: 2513,
-	        profilepic: 'http://pbs.twimg.com/profile_images/661708465656561664/kcAf4qgU_normal.jpg',
-	        created: 'Sun Oct 26 01:18:03 +0000 2008',
-	        tweet: 'RT @BoSnerdley: Apple says initial quantities of iPhone 7 Plus sold out https://t.co/GM4Cy2khvh via @Reuters'
+	        tweet: 'Somethings wrong bruh'
 	      }]
+	    });
+	  } else if (action.type === actions.SORT_OPTION) {
+	    return Object.assign({}, state, {
+	      method: action.option
 	    });
 	  }
 	
@@ -23929,6 +23890,10 @@
 	
 	var _TweetList2 = _interopRequireDefault(_TweetList);
 	
+	var _reactDropdown = __webpack_require__(210);
+	
+	var _reactDropdown2 = _interopRequireDefault(_reactDropdown);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23948,19 +23913,27 @@
 	    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 	
 	    _this.getTweets = _this.getTweets.bind(_this);
+	    _this.onSelect = _this.onSelect.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(Main, [{
 	    key: 'getTweets',
 	    value: function getTweets(userInput) {
-	      // TODO: Functionality for fetchGetTweets() action
 	      var userSearch = this.refs.userSearch.value;
 	      this.props.dispatch(actions.fetchGetTweets(userSearch));
 	    }
 	  }, {
+	    key: 'onSelect',
+	    value: function onSelect(option) {
+	      this.props.dispatch(actions.sortOption(option.value));
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log(this.props.method, '<--Method');
+	      var options = ['Followers', 'Retweets', 'Hearts'];
+	      var defaultOption = options[0];
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -23969,7 +23942,17 @@
 	          null,
 	          'Twitter Influencers'
 	        ),
-	        _react2.default.createElement('input', { type: 'text', ref: 'userSearch', placeholder: '"JavaScript", "React.js", "Bill Cosby"' }),
+	        _react2.default.createElement('input', { className: 'search-bar', type: 'text', ref: 'userSearch', placeholder: '"JavaScript", "React.js", "Bill Cosby"' }),
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'Arrange By: '
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(_reactDropdown2.default, { options: options, onChange: this.onSelect, value: defaultOption, placeholder: 'Select' })
+	        ),
 	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.getTweets },
@@ -23985,7 +23968,7 @@
 	
 	var mapStateToProps = function mapStateToProps(state, props) {
 	  return {
-	    // TODO: State
+	    method: state.method
 	  };
 	};
 	
@@ -24033,13 +24016,20 @@
 	  _createClass(TweetList, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.props.tweets, "<--- tweets state");
-	
-	      var sortedByFollowers = this.props.tweets.sort(function (obj1, obj2) {
-	        return obj2.followers - obj1.followers;
-	      });
+	      console.log(this.props.tweets, '<--- tweets state');
+	      console.log(this.props.method, '<--search method');
 	      var that = this;
-	      var tweets = Object.keys(sortedByFollowers).map(function (obj, index) {
+	      var sortTweets = this.props.tweets.sort(function (obj1, obj2) {
+	
+	        if (that.props.method === 'Hearts') {
+	          return obj2.favorites - obj1.favorites;
+	        } else if (that.props.method === 'Retweets') {
+	          return obj2.retweets - obj1.retweets;
+	        } else if (that.props.method === 'Followers') {
+	          return obj2.followers - obj1.followers;
+	        }
+	      });
+	      var tweets = Object.keys(sortTweets).map(function (obj, index) {
 	        var tweet = that.props.tweets[obj];
 	
 	        return _react2.default.createElement(
@@ -24066,7 +24056,8 @@
 	
 	var mapStateToProps = function mapStateToProps(state, props) {
 	  return {
-	    tweets: state.tweets
+	    tweets: state.tweets,
+	    method: state.method
 	  };
 	};
 	
@@ -24091,7 +24082,7 @@
 	var Tweet = function Tweet(props) {
 	  return _react2.default.createElement(
 	    "div",
-	    { className: "tweet-box" },
+	    { className: "tweet-box fade-in" },
 	    _react2.default.createElement("img", { src: props.pic, alt: "Profile Pic" }),
 	    _react2.default.createElement(
 	      "h4",
@@ -24114,6 +24105,275 @@
 	};
 	
 	exports.default = Tweet;
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(34);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _classnames = __webpack_require__(211);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Dropdown = function (_Component) {
+	  _inherits(Dropdown, _Component);
+	
+	  function Dropdown(props) {
+	    _classCallCheck(this, Dropdown);
+	
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Dropdown).call(this, props));
+	
+	    _this.state = {
+	      selected: props.value || {
+	        label: props.placeholder || 'Select...',
+	        value: ''
+	      },
+	      isOpen: false
+	    };
+	    _this.mounted = true;
+	    _this.handleDocumentClick = _this.handleDocumentClick.bind(_this);
+	    _this.fireChangeEvent = _this.fireChangeEvent.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Dropdown, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(newProps) {
+	      if (newProps.value && newProps.value !== this.state.selected) {
+	        this.setState({ selected: newProps.value });
+	      } else if (!newProps.value && newProps.placeholder) {
+	        this.setState({ selected: { label: newProps.placeholder, value: '' } });
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      document.addEventListener('click', this.handleDocumentClick, false);
+	      document.addEventListener('touchend', this.handleDocumentClick, false);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.mounted = false;
+	      document.removeEventListener('click', this.handleDocumentClick, false);
+	      document.removeEventListener('touchend', this.handleDocumentClick, false);
+	    }
+	  }, {
+	    key: 'handleMouseDown',
+	    value: function handleMouseDown(event) {
+	      if (event.type === 'mousedown' && event.button !== 0) return;
+	      event.stopPropagation();
+	      event.preventDefault();
+	
+	      this.setState({
+	        isOpen: !this.state.isOpen
+	      });
+	    }
+	  }, {
+	    key: 'setValue',
+	    value: function setValue(value, label) {
+	      var newState = {
+	        selected: {
+	          value: value,
+	          label: label
+	        },
+	        isOpen: false
+	      };
+	      this.fireChangeEvent(newState);
+	      this.setState(newState);
+	    }
+	  }, {
+	    key: 'fireChangeEvent',
+	    value: function fireChangeEvent(newState) {
+	      if (newState.selected !== this.state.selected && this.props.onChange) {
+	        this.props.onChange(newState.selected);
+	      }
+	    }
+	  }, {
+	    key: 'renderOption',
+	    value: function renderOption(option) {
+	      var _classNames;
+	
+	      var optionClass = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, this.props.baseClassName + '-option', true), _defineProperty(_classNames, 'is-selected', option === this.state.selected), _classNames));
+	
+	      var value = option.value || option.label || option;
+	      var label = option.label || option.value || option;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        {
+	          key: value,
+	          className: optionClass,
+	          onMouseDown: this.setValue.bind(this, value, label),
+	          onClick: this.setValue.bind(this, value, label) },
+	        label
+	      );
+	    }
+	  }, {
+	    key: 'buildMenu',
+	    value: function buildMenu() {
+	      var _this2 = this;
+	
+	      var _props = this.props;
+	      var options = _props.options;
+	      var baseClassName = _props.baseClassName;
+	
+	      var ops = options.map(function (option) {
+	        if (option.type === 'group') {
+	          var groupTitle = _react2.default.createElement(
+	            'div',
+	            { className: baseClassName + '-title' },
+	            option.name
+	          );
+	          var _options = option.items.map(function (item) {
+	            return _this2.renderOption(item);
+	          });
+	
+	          return _react2.default.createElement(
+	            'div',
+	            { className: baseClassName + '-group', key: option.name },
+	            groupTitle,
+	            _options
+	          );
+	        } else {
+	          return _this2.renderOption(option);
+	        }
+	      });
+	
+	      return ops.length ? ops : _react2.default.createElement(
+	        'div',
+	        { className: baseClassName + '-noresults' },
+	        'No options found'
+	      );
+	    }
+	  }, {
+	    key: 'handleDocumentClick',
+	    value: function handleDocumentClick(event) {
+	      if (this.mounted) {
+	        if (!_reactDom2.default.findDOMNode(this).contains(event.target)) {
+	          this.setState({ isOpen: false });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _classNames2;
+	
+	      var baseClassName = this.props.baseClassName;
+	
+	      var placeHolderValue = typeof this.state.selected === 'string' ? this.state.selected : this.state.selected.label;
+	      var value = _react2.default.createElement(
+	        'div',
+	        { className: baseClassName + '-placeholder' },
+	        placeHolderValue
+	      );
+	      var menu = this.state.isOpen ? _react2.default.createElement(
+	        'div',
+	        { className: baseClassName + '-menu' },
+	        this.buildMenu()
+	      ) : null;
+	
+	      var dropdownClass = (0, _classnames2.default)((_classNames2 = {}, _defineProperty(_classNames2, baseClassName + '-root', true), _defineProperty(_classNames2, 'is-open', this.state.isOpen), _classNames2));
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: dropdownClass },
+	        _react2.default.createElement(
+	          'div',
+	          { className: baseClassName + '-control', onMouseDown: this.handleMouseDown.bind(this), onTouchEnd: this.handleMouseDown.bind(this) },
+	          value,
+	          _react2.default.createElement('span', { className: baseClassName + '-arrow' })
+	        ),
+	        menu
+	      );
+	    }
+	  }]);
+	
+	  return Dropdown;
+	}(_react.Component);
+	
+	Dropdown.defaultProps = { baseClassName: 'Dropdown' };
+	exports.default = Dropdown;
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+	
+	(function () {
+		'use strict';
+	
+		var hasOwn = {}.hasOwnProperty;
+	
+		function classNames () {
+			var classes = [];
+	
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+	
+				var argType = typeof arg;
+	
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+	
+			return classes.join(' ');
+		}
+	
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
 
 /***/ }
 /******/ ]);
