@@ -23,9 +23,10 @@ import fetch from 'isomorphic-fetch'
 export var fetchGetTweets = (userSearch) => {
   console.log("in fetchGetTweets, ", userSearch)
   return (dispatch) => {
-    let url = 'https://damp-anchorage-23159.herokuapp.com/tweets'
+    //let url = 'https://damp-anchorage-23159.herokuapp.com/tweets'
+    let url = 'http://localhost:8080/tweets'
     let request = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -34,6 +35,7 @@ export var fetchGetTweets = (userSearch) => {
         {userSearch: userSearch}
         )
     }
+    console.log('1')
     return fetch(url, request)
     .then((response) => {
       if (response.status < 200 || response.status >= 300) {
@@ -42,6 +44,7 @@ export var fetchGetTweets = (userSearch) => {
         error.response = response
         throw error
       }
+      console.log('3')
       return response.json()
     })
     .then((tweets) => {
@@ -52,6 +55,7 @@ export var fetchGetTweets = (userSearch) => {
       )
     })
     .catch((error) => {
+      console.log(error)
       return dispatch(
         fetchGetTweetsError(error)
       )

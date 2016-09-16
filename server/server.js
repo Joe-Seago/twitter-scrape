@@ -73,9 +73,9 @@ app.use(express.static('build'))
 /* ----------- USER ENDPOINTS ---------- */
 
 // GET TWEETS
-app.get('/tweets', jsonParser, function(req, res) {
+app.post('/tweets', jsonParser, function(req, res) {
   console.log(req.body, '<--request')
-  query = req.body.userSearch
+  let query = req.body.userSearch
   // hardcoded search term for testing
   let term = "basketball"
   let url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + query + '&lang=en&result_type=recent'
@@ -90,6 +90,7 @@ app.get('/tweets', jsonParser, function(req, res) {
       "Authorization": "Bearer " + bearerToken
     }
   },
+
   function(err, response, body) {
 
     let filterTweets = (element, index, array) => {
@@ -109,9 +110,10 @@ app.get('/tweets', jsonParser, function(req, res) {
     body.statuses.forEach(filterTweets)
     console.log(filteredArray, '<==RES AFTER PARSING')
     console.log(filteredArray.length, '<- length of array')
+    res.json(filteredArray)
   });
 
-  return filteredArray
+  //return filteredArray
 });
 
 let port = process.env.PORT || 8080

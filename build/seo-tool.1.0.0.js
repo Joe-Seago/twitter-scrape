@@ -23264,15 +23264,17 @@
 	var fetchGetTweets = exports.fetchGetTweets = function fetchGetTweets(userSearch) {
 	  console.log("in fetchGetTweets, ", userSearch);
 	  return function (dispatch) {
-	    var url = 'https://damp-anchorage-23159.herokuapp.com/tweets';
+	    //let url = 'https://damp-anchorage-23159.herokuapp.com/tweets'
+	    var url = 'http://localhost:8080/tweets';
 	    var request = {
-	      method: 'GET',
+	      method: 'POST',
 	      headers: {
 	        "Accept": "application/json",
 	        "Content-Type": "application/json"
 	      },
 	      body: JSON.stringify({ userSearch: userSearch })
 	    };
+	    console.log('1');
 	    return (0, _isomorphicFetch2.default)(url, request).then(function (response) {
 	      if (response.status < 200 || response.status >= 300) {
 	        console.log('2');
@@ -23280,12 +23282,14 @@
 	        error.response = response;
 	        throw error;
 	      }
+	      console.log('3');
 	      return response.json();
 	    }).then(function (tweets) {
 	      console.log(tweets, "<--Response Body");
 	
 	      return dispatch(fetchGetTweetsSuccess(tweets));
 	    }).catch(function (error) {
+	      console.log(error);
 	      return dispatch(fetchGetTweetsError(error));
 	    });
 	  };
