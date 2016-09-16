@@ -23264,7 +23264,7 @@
 	var fetchGetTweets = exports.fetchGetTweets = function fetchGetTweets(userSearch) {
 	  console.log("in fetchGetTweets, ", userSearch);
 	  return function (dispatch) {
-	    var url = 'http://localhost:8080/tweets';
+	    var url = 'https://damp-anchorage-23159.herokuapp.com/tweets';
 	    var request = {
 	      method: 'GET',
 	      headers: {
