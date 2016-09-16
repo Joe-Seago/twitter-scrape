@@ -23264,18 +23264,20 @@
 	var fetchGetTweets = exports.fetchGetTweets = function fetchGetTweets(userSearch) {
 	  console.log("in fetchGetTweets, ", userSearch);
 	  return function (dispatch) {
-	    var url = 'http://localhost:8000/tweets';
+	    var url = 'http://localhost:8080/tweets';
 	    var request = {
-	      mode: 'no-cors',
 	      method: 'GET',
 	      headers: {
 	        "Accept": "application/json",
 	        "Content-Type": "application/json"
 	      },
-	      body: userSearch
+	      body: {
+	        "userSearch": userSearch
+	      }
 	    };
 	    return (0, _isomorphicFetch2.default)(url, request).then(function (response) {
 	      if (response.status < 200 || response.status >= 300) {
+	        console.log('2');
 	        var error = new Error(response.statusText);
 	        error.response = response;
 	        throw error;
@@ -23283,21 +23285,7 @@
 	      return response.json();
 	    }).then(function (tweets) {
 	      console.log(tweets, "<--Response Body");
-	      var tweetArray = [];
 	
-	      var filterTweets = function filterTweets(element, index, array) {
-	        if (element.user.followers_count > 500) {
-	          tweetArray.push({
-	            realname: element.user.name,
-	            handle: element.user.screen_name,
-	            location: element.user.location,
-	            followers: element.user.followers_count,
-	            profilepic: element.user.profile_image_url,
-	            created: element.user.created_at,
-	            tweet: element.text
-	          });
-	        }
-	      };
 	      return dispatch(fetchGetTweetsSuccess(tweets));
 	    }).catch(function (error) {
 	      return dispatch(fetchGetTweetsError(error));
@@ -23860,7 +23848,23 @@
 	
 	  if (action.type === actions.FETCH_GET_TWEETS_SUCCESS) {
 	    return Object.assign({}, state, {
-	      tweets: action.tweets
+	      tweets: action.tweets || [{
+	        realname: 'cumiho',
+	        handle: 'cumihomo',
+	        location: 'Indonesia',
+	        followers: 511,
+	        profilepic: 'http://pbs.twimg.com/profile_images/498731546874892288/scTkrbtI_normal.jpeg',
+	        created: 'Thu Dec 01 09:36:23 +0000 2011',
+	        tweet: '"Thought you\'d buy yourself an iPhone 7 on Friday? Too bad, UK" https://t.co/jj7oHDvAL1'
+	      }, {
+	        realname: 'billck',
+	        handle: 'billck',
+	        location: 'Gardner, KS',
+	        followers: 2513,
+	        profilepic: 'http://pbs.twimg.com/profile_images/661708465656561664/kcAf4qgU_normal.jpg',
+	        created: 'Sun Oct 26 01:18:03 +0000 2008',
+	        tweet: 'RT @BoSnerdley: Apple says initial quantities of iPhone 7 Plus sold out https://t.co/GM4Cy2khvh via @Reuters'
+	      }]
 	    });
 	  }
 	

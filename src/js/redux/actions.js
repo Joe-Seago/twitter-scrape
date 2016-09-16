@@ -23,19 +23,21 @@ import fetch from 'isomorphic-fetch'
 export var fetchGetTweets = (userSearch) => {
   console.log("in fetchGetTweets, ", userSearch)
   return (dispatch) => {
-    let url = 'http://localhost:8000/tweets'
+    let url = 'http://localhost:8080/tweets'
     let request = {
-      mode: 'no-cors',
       method: 'GET',
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: userSearch
+      body: {
+        "userSearch": userSearch
+      }
     }
     return fetch(url, request)
     .then((response) => {
       if (response.status < 200 || response.status >= 300) {
+        console.log('2')
         const error = new Error(response.statusText)
         error.response = response
         throw error
@@ -44,21 +46,7 @@ export var fetchGetTweets = (userSearch) => {
     })
     .then((tweets) => {
       console.log(tweets, "<--Response Body")
-      let tweetArray = []
 
-      let filterTweets = (element, index, array) => {
-        if(element.user.followers_count > 500) {
-          tweetArray.push({
-            realname: element.user.name,
-            handle: element.user.screen_name,
-            location: element.user.location,
-            followers: element.user.followers_count,
-            profilepic: element.user.profile_image_url,
-            created: element.user.created_at,
-            tweet: element.text
-          })
-        }
-      }
       return dispatch(
         fetchGetTweetsSuccess(tweets)
       )

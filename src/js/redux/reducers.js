@@ -47,7 +47,25 @@ var AppReducer = (state, action) => {
 
   if (action.type === actions.FETCH_GET_TWEETS_SUCCESS) {
     return Object.assign({}, state, {
-      tweets: action.tweets
+      tweets: action.tweets || [
+          {
+            realname: 'cumiho',
+            handle: 'cumihomo',
+            location: 'Indonesia',
+            followers: 511,
+            profilepic: 'http://pbs.twimg.com/profile_images/498731546874892288/scTkrbtI_normal.jpeg',
+            created: 'Thu Dec 01 09:36:23 +0000 2011',
+            tweet: '"Thought you\'d buy yourself an iPhone 7 on Friday? Too bad, UK" https://t.co/jj7oHDvAL1'
+          },
+          {
+            realname: 'billck',
+            handle: 'billck',
+            location: 'Gardner, KS',
+            followers: 2513,
+            profilepic: 'http://pbs.twimg.com/profile_images/661708465656561664/kcAf4qgU_normal.jpg',
+            created: 'Sun Oct 26 01:18:03 +0000 2008',
+            tweet: 'RT @BoSnerdley: Apple says initial quantities of iPhone 7 Plus sold out https://t.co/GM4Cy2khvh via @Reuters'
+          } ]
     })
   }
 
