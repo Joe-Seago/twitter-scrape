@@ -11,8 +11,8 @@ import fetch from 'isomorphic-fetch'
 export var fetchGetTweets = (userSearch) => {
   console.log("in fetchGetTweets, ", userSearch)
   return (dispatch) => {
-    //let url = 'https://damp-anchorage-23159.herokuapp.com/tweets'
-    let url = 'http://localhost:8080/tweets'
+    let url = 'https://damp-anchorage-23159.herokuapp.com/tweets'
+    //let url = 'http://localhost:8080/tweets'
     let request = {
       method: 'POST',
       headers: {
